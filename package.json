@@ -1,0 +1,14 @@
+{
+  "name": "simpleCommandline",
+  "version": "1.0.0",
+  "private": true,
+  "preferGlobal": "true", 
+  "bin": {
+    "scl": "bin/simplecommandline.js"
+  },
+  "main" : "./lib/simplecommandline.js",
+  "dependencies": {
+    "colors": "^1.1.2"
+  },
+  "devDependencies": {}
+}
