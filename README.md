@@ -13,4 +13,5 @@ Create your own command line program easily by simply create an function
 
 #### Test
 `scl scl myepic:command 0`
+
 `scl scl myepic:command 1`
