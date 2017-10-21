@@ -1,7 +1,6 @@
 {
-  "name": "simpleCommandline",
-  "version": "1.0.0",
-  "private": true,
+  "name": "simplecommandline",
+  "version": "1.0.1",
   "preferGlobal": "true", 
   "bin": {
     "scl": "bin/simplecommandline.js"
