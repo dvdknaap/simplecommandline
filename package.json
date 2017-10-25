@@ -1,13 +1,35 @@
 {
   "name": "simplecommandline",
-  "version": "1.0.2",
-  "preferGlobal": "true", 
+  "version": "1.0.3",
+  "preferGlobal": "true",
   "bin": {
     "scl": "bin/simplecommandline.js"
   },
-  "main" : "./lib/simplecommandline.js",
+  "author": "Danny van der Knaap",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dvdknaap/simplemailer/issues"
+  },
+  "main": "./lib/simplecommandline.js",
   "dependencies": {
     "colors": "^1.1.2"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "description": "Create commandline easily in nodejs",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvdknaap/simplecommandline.git"
+  },
+  "keywords": [
+    "error",
+    "handler",
+    "nodejs"
+  ],
+  "homepage": "https://github.com/dvdknaap/simplecommandline#readme"
 }
