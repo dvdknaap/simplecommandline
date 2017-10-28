@@ -22,4 +22,5 @@ When you want to change the logo of your simple commandline program simply add a
 
 #### Help
 Keep in mind that when you are passing an argument with spaces pass the argument with --argName="argValue"
+
 `scl help`
