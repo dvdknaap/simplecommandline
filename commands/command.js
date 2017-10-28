@@ -1,10 +1,9 @@
 'use strict';
 
-const commands = require('../commands.json');
 const fs       = require('fs');
 
 var commandCommand = {
-	"create": function (args, projectPath, simpleCommandPath) {
+	"create": function (args, projectPath, simpleCommandPath, projectCommandPath) {
 		let response = {'success': false, 'message': 'Unknown error'};
 
 		// Params
@@ -15,6 +14,7 @@ var commandCommand = {
 		let shortcut      = (typeof args['shortcut'] !== "undefined" ? args['shortcut'] : (typeof args[4] !== "undefined" ? args[4] : '')).toLowerCase();
 		let usage         = (typeof args['usage'] !== "undefined" ? args['usage'] : (typeof args[5] !== "undefined" ? args[5] : '')).toLowerCase();
 		let example       = (typeof args['example'] !== "undefined" ? args['example'] : (typeof args[6] !== "undefined" ? args[6] : '')).toLowerCase();
+		let globalCommand = (typeof args['globalCommand'] !== "undefined" ? args['globalCommand'] : (typeof args[7] !== "undefined" ? args[7] : 0));
 
 		// Check if we received command name
 		if (commandName === '') {
@@ -52,9 +52,39 @@ var commandCommand = {
 			return response;
 		}
 
+		// Check if we need to add global command setting
+		if (globalCommand && globalCommand == "1") {
+			var commands = require(simpleCommandPath+'/globalCommands.json');
+		} else {
+
+			// Check if project command path doesn't exists
+			if (!fs.existsSync(projectCommandPath)) {
+				let mkdirp = require('mkdirp');
+				    
+				mkdirp.sync(projectCommandPath);
+			}
+
+			// Check if project command path doesn't exists
+			if (!fs.existsSync(projectCommandPath+'/commands')) {
+				let mkdirp = require('mkdirp');
+				    
+				mkdirp.sync(projectCommandPath+'/commands');
+			}
+
+			// Check if commands exists in project root
+			if (fs.existsSync(projectCommandPath+'/commands.json')) {
+				commands = require(projectCommandPath+'/commands.json');
+			} else {
+				commands = {};
+
+				fs.writeFileSync(projectCommandPath+'/commands.json', JSON.stringify(commands));
+			}
+		}
+
 		// Check if command already exists
 		if (typeof commands[commandName] !== "undefined" && typeof commands[commandName][commandMethod] !== "undefined") {
 			response.message = 'command already exists, remove command and try again';
+			return response;
 		}
 
 		if (typeof commands[commandName] === "undefined") {
@@ -73,9 +103,28 @@ var commandCommand = {
 			commands[commandName][commandMethod]['example'] = example;
 		}
 
-		let allCommandsFile = simpleCommandPath+'/commands.json';
-		let commandFile     = simpleCommandPath+'/commands/'+commandName+'.js';
+		// Check if we need to add global command setting
+		if (globalCommand && globalCommand !== "") {
+			commands[commandName][commandMethod]['globalCommand'] = globalCommand;
+		}
+
 		let commandExample  = fs.readFileSync(simpleCommandPath+'/examples/commands.js').toString();
+		let allCommandsFile = '';
+		let commandFile     = '';
+
+		// When new command is global
+		if (globalCommand == 1) {
+			allCommandsFile = simpleCommandPath+'/globalCommands.json';
+			commandFile     = simpleCommandPath+'/commands/'+commandName+'.js';
+		} else {
+			allCommandsFile = projectCommandPath+'/commands.json';
+			commandFile     = projectCommandPath+'/commands/'+commandName+'.js';
+
+			// Check if there is an custom example for commands
+			if (fs.existsSync(projectCommandPath+'/examples/commands.js')) {
+				commandExample  = fs.readFileSync(projectCommandPath+'/examples/commands.js').toString();
+			}
+		}
 
 		// Replace model templates
 		commandExample = commandExample.
@@ -84,6 +133,7 @@ var commandCommand = {
 		;
 
 		try {
+
 			fs.writeFileSync(allCommandsFile, JSON.stringify(commands));
 
 			// Check if command file already exists
@@ -108,16 +158,23 @@ var commandCommand = {
 
 		return response;
 	},
-	"remove": function (args, projectPath, simpleCommandPath) {
+	"remove": function (args, projectPath, simpleCommandPath, projectCommandPath) {
 		let response      = {'success': false, 'message': 'Unknown error'};
 		
 		// Params
 		let commandName     = (typeof args['commandName'] !== "undefined" ? args['commandName'] : (typeof args[0] !== "undefined" ? args[0] : '')).toLowerCase();
 		let commandMethod   = (typeof args['commandMethod'] !== "undefined" ? args['commandMethod'] : (typeof args[1] !== "undefined" ? args[1] : '')).toLowerCase();
 		
-		let allCommandsFile = simpleCommandPath+'/commands.json';
+		let allCommandsFile = projectCommandPath+'/commands.json';
+
+		// Check if commands not exists in project root
+		if (!fs.existsSync(projectCommandPath+'/commands.json')) {
+			response.message = 'No commands.json found in project directory';
+			return response;
+		}
+
 		let commands        = require(allCommandsFile);
-		let commandFile     = simpleCommandPath+'/commands/'+commandName+'.js';
+		let commandFile     = projectCommandPath+'/commands/'+commandName+'.js';
 
 		try {
 			// Check if command file already exists
@@ -150,8 +207,9 @@ var commandCommand = {
 
 			if (!response.success) {
 				response.success = true;
-				response.message = 'command '+commandName+':'+commandMethod+' successfully removed';
 			}
+			
+			response.message = 'command '+commandName+':'+commandMethod+' successfully removed';
 
 		} catch (err) {
 			response.message = 'My custom error from command:remove';

@@ -1,0 +1,20 @@
+{
+  "command": {
+    "create": {
+      "name": "Create command",
+      "desc": "Create an new command",
+      "shortcut": "c:com",
+      "usage": "<commandName> (--commandName='commandName') <commandMethod> (--commandMethod='commandMethod') <name> (--name='name') <desc> (--desc='desc') <shortcut> (--shortcut='shortcut') <usage> (--usage='usage') <globalCommand> (--globalCommand='no')",
+      "example": "command:create myepic TestCommand TestCommand --desc=\"my awesome command\" --shortcut=\"c:tc\" --usage=\"<argSuccess> (--argSuccess='1')\" --example=\"myepic:TestCommand 0\" ",
+      "globalCommand":true
+    },
+    "remove": {
+      "name": "Remove command method",
+      "desc": "Remove an existing command method",
+      "shortcut": "c:r",
+      "usage": "<commandName> (--commandName='commandName') <commandMethod> (--commandMethod='commandMethod')",
+      "example": "command:remove myepic TestCommand",
+      "globalCommand":true
+    }
+  }
+}

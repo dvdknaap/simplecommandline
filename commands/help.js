@@ -1,7 +1,6 @@
 'use strict';
 const fs       = require('fs');
 const colors   = require('colors');
-const commands = require('../commands.json');
 
 colors.setTheme({
     silly: 'rainbow',
@@ -16,28 +15,32 @@ colors.setTheme({
     error: 'red'
 });
 
-const logo = fs.readFileSync(__dirname+'/../logo.ascii');
 
 var helpCommand = {
 	"lastHelpMessageCommandName": "",
+	"commands": "",
+	"init": function (commands, projectCommandPath) {
+		this.commands = commands;
+
+		return this;
+	},
 	"helpMesssage": function (usedCommandName='') {
-		console.log(String(logo).blue);
 
 		let HelpMessage = '';
 		HelpMessage += 'Usage:'+"\n"+
-			'red '+(usedCommandName !== '' && usedCommandName !== 'help' ? usedCommandName : 'commandName')+':commandMethod [arguments]'+"\n\n"+
+			'scl '+(usedCommandName !== '' && usedCommandName !== 'help' ? usedCommandName : 'commandName')+':commandMethod [arguments]'+"\n\n"+
 			'Options:'+"\n\n"
 		;
 
 		// Loop throught all commands
-		for (let commandName in commands) {
+		for (let commandName in this.commands) {
 			if ((usedCommandName !== 'help' && usedCommandName !== '') && commandName !== usedCommandName) {
 				continue;
 			}
 
 			this.lastHelpMessageCommandName = '';
-			for (let commandMethod in commands[commandName]) {
-				HelpMessage += this.printHelpMessage(commandName, commandMethod, commands[commandName][commandMethod]);
+			for (let commandMethod in this.commands[commandName]) {
+				HelpMessage += this.printHelpMessage(commandName, commandMethod, this.commands[commandName][commandMethod]);
 			}
 
 			HelpMessage += "\n";
@@ -47,9 +50,8 @@ var helpCommand = {
 		process.exit(1);
 	},
 	"unknownCommand": function (commandName='') {
-		console.info('help:unknownCommand', arguments);
 
-		process.stdout.write('Unknown command use \'red'+(commandName !== '' ? ' '+commandName : '')+' help\' for more information');
+		process.stdout.write('Unknown command use \'scl'+(commandName !== '' ? ' '+commandName : '')+' help\' for more information');
 		process.exit(1);
 	},
 	"printHelpMessage": function (commandName, commandMethod, commandInfo) {

@@ -1,10 +1,13 @@
 'use strict';
 
 var {{commandName}}Command = {
-	"{{commandMethod}}": function (args, projectPath, redCommandPath) {
+	"{{commandMethod}}": function (args, projectPath, simpleCommandPath, projectCommandPath) {
 		let response = {'success': false, 'message': 'Unknown error'};
 
-		if (true) {
+		// Params
+		let argSuccess = (typeof args['firstArgName'] !== "undefined" ? args['firstArgName'] : (typeof args[0] !== "undefined" ? args[0] : false));
+		
+		if (argSuccess == true) {
 			response.success = true;
 			response.message = 'command {{commandName}}:{{commandMethod}} successfully executed';
 		}

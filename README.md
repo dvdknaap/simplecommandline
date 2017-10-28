@@ -6,46 +6,20 @@ Create your own command line program easily by simply create an function
 #### Install
 `npm install -g simplecommandline`
 
+#### Create an new command
+Custom folder will be saved in 'helpers/simplecommandline' in your current directory
+`scl command:create myepic TestCommand TestCommand --desc="my awesome command" --shortcut="c:tc" --usage="<argSuccess> (--argSuccess='1')" --example="myepic:TestCommand 0"`
 
-#### Help
-`scl help`
-
+#### Remove an command
+`scl command:remove myepic TestCommand`
 
 #### Test
-`scl scl myepic:command 0`
+`scl myepic:TestCommand 0`
+`scl myepic:TestCommand 1`
 
-`scl scl myepic:command 1`
+#### Customize
+When you want to change the logo of your simple commandline program simply add an new 'logo.ascii' file in 'helpers/simplecommandline' 
 
-
-#### Config
-Be sure you have an commands.json file in your root directory with the content as discribed in `commands.json.example`
-```javascript
-{
-  "command": {
-    "create": {
-      "name": "Create command",
-      "desc": "Create an new command",
-      "shortcut": "c:com",
-      "usage": "<commandName> (--commandName='commandName') <commandMethod> (--commandMethod='commandMethod') <name> (--name='name') <desc> (--desc='desc') <shortcut> (--shortcut='shortcut') <usage> (--usage='usage')",
-      "example": "command:create test myTest TestCommand --desc=\"my awesome command\" --shortcut='c:myTest' --usage=\"testCommandUsage\" --example=\"My Test command example\""
-    },
-    "remove": {
-      "name": "Remove command method",
-      "desc": "Remove an existing command method",
-      "shortcut": "c:r",
-      "usage": "<commandName> (--commandName='commandName') <commandMethod> (--commandMethod='commandMethod')",
-      "example": "Remove given command method"
-    }
-  },
-  "myepic": {
-    "command": {
-      "name": "my epiccommand",
-      "desc": "my awesome command",
-      "shortcut": "epic:command",
-      "usage": "myepic:command",
-      "example": "my awesome command"
-    }
-  }
-}
-
-```
+#### Help
+Keep in mind that when you are passing an argument with spaces pass the argument with --argName="argValue"
+`scl help`
