@@ -1,6 +1,6 @@
 {
   "name": "simplecommandline",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "preferGlobal": "true",
   "bin": {
     "scl": "bin/simplecommandline.js"
@@ -28,8 +28,12 @@
     "url": "git+https://github.com/dvdknaap/simplecommandline.git"
   },
   "keywords": [
-    "error",
-    "handler",
+    "commandline",
+    "program",
+    "commander",
+    "command",
+    "parser",
+    "option",
     "nodejs"
   ],
   "homepage": "https://github.com/dvdknaap/simplecommandline#readme"
