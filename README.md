@@ -1,5 +1,5 @@
 # simple commandline
-[![NPM Version](http://img.shields.io/npm/v/simplecommandline.svg?style=flat)](https://www.npmjs.org/package/simplecommandline)
+[![NPM Version](https://img.shields.io/npm/v/simplecommandline.svg?style=flat)](https://www.npmjs.org/package/simplecommandline)
 
 Create your own command line program easily by simply create an function
 
